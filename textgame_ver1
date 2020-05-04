@@ -1,0 +1,47 @@
+#todo: compare if entered word is similar to needed word
+
+secretWords = ["rucksack", "machine", "marshmallow"]
+encryptedWords = []
+
+word = secretWords[0]
+charNum = len(word)
+noOfgaps = int(charNum / 2)
+char_count = 0
+usr_controls = ""
+word_count = 0
+
+print("\nHello - let's play! :) Here is your secret word, can you guess the real word behind it?")
+for word in secretWords:
+    gappedWord = ""
+    for char in word:
+        char_count += 1
+        if char_count % 2 == 0:
+            gappedWord += "_"
+        else:
+            gappedWord += char
+    encryptedWords.append(gappedWord)
+    print(gappedWord)
+    print("\nWHICH WORD:", gappedWord)
+    print("\nYour guess:")
+    guessedWord = input().lower()
+    if guessedWord == "stop":
+        break
+    err_count = 0
+    while guessedWord != secretWords[word_count]:
+        err_count += 1
+        print("Attempt no.", err_count, "wrong. Please try again")
+        guessedWord = input()
+        if guessedWord == secretWords[word_count]:
+            print("congrats, well done!")
+            word_count += 1
+            #break test
+
+
+
+
+print(encryptedWords)
+print(secretWords)
+
+#print("modulo:",7 % 2)
+
+
