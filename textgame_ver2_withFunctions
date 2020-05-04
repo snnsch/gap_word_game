@@ -1,0 +1,70 @@
+# todo: compare if entered word is similar to needed word
+# todo: refactor check_if_words_match function to reflect major end criterion (i.e. errCount < 4)
+# todo: more characters should be displayed with each attempt (for final attempt, 80% of the chars should be displayed => save "interim words" while creation in for loop to avoid more loops)
+# todo: show number of words vs attempts (change with each word, e.g. "4/12")
+
+secretWords = ["rucksack", "machine", "marshmallow", "wool", "idealism", "slumber"]
+encryptedWords = []
+
+
+def create_gaps(word):
+    char_count = 0
+    gappedWord = ""
+    for char in word:
+        char_count += 1
+        if char_count % 2 == 0:
+            gappedWord += "_"
+        else:
+            gappedWord += char
+    encryptedWords.append(gappedWord)
+    return gappedWord
+
+
+def check_if_words_match(gappedWord, wordCount):
+    errCount = 0
+    while True: #refactor: why end loop? bcs of errCount < 4
+        print("\nWHICH WORD:", gappedWord)
+        print("\nYour guess:")
+        guessedWord = input().lower()
+        if guessedWord == "stop":
+            return "user_stop"
+            break
+        elif guessedWord == secretWords[wordCount]:
+            print(">>> CONGRATS, well done! The word was:", secretWords[wordCount].upper())
+            return wordCount
+            break
+        elif guessedWord != secretWords[wordCount] and errCount < 2:
+            errCount += 1
+            print("Attempt no.", errCount, "WRONG. Please try again!")
+            continue
+        elif guessedWord != secretWords[wordCount] and errCount == 2:
+            elicitedString = secretWords[wordCount]
+            maxHalf = int(len(elicitedString) / 2)
+            sliced = elicitedString[:maxHalf]
+            print("Too tricky? Here's your final hint:", sliced.upper(),"...")
+            errCount += 1
+        elif guessedWord != secretWords[wordCount] and errCount == 3:
+            print("Sorry, too many attempts, the word was:", secretWords[wordCount].upper())
+            break
+        else:
+            print("Something's fishy")
+
+
+def guess_the_gaps():
+    print("\nHello - let's play! :) Here is your secret word, can you guess the real word behind it?")
+    wordCount = 0
+    for word in secretWords:
+        gappedWord = create_gaps(word)
+        guessedWord = check_if_words_match(gappedWord, wordCount)
+        if guessedWord == "user_stop":
+            break
+        else:
+            wordCount += 1
+    print("That's the end of our game - THANK YOU FOR PLAYING!")
+
+# MAIN PROGRAMME
+
+guess_the_gaps()
+
+# HINTS - how does module work and help us here? Replace the first number before % with 0, 1, 2, 3, ... and run each time to see what happens
+# print("modulo:",7 % 2)
