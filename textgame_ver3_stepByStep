@@ -1,0 +1,157 @@
+############
+# (1) Unsere "Datenkbank" bleibt immer oben; nun unsere ersten Schleifen für die Iterationen
+
+words = ["metal"]
+
+# we need two for loops
+for word in words:
+    print(word)
+    for char in word:
+        print(char)
+
+############
+# (2) Wie jedes 2. Wort rausfinden?
+
+charCount = 0
+
+# we count the chars per loop and replace every second char manually => it works! but how efficient and sustainable?
+for word in words:
+    print(word)
+    for char in word:
+        if charCount == 1 or charCount == 3 or charCount == 5:
+            print("_")
+        else:
+            print(char)
+        charCount += 1
+
+############
+# (3) Wir brauchen MODULO
+
+# Wir probieren modulo aus => wo bleibt Rest?
+print("modulo:",4 % 2)
+
+# also if durch Modulo ersetzen
+for word in words:
+    print(word)
+    for char in word:
+        if charCount % 2 == 1:
+            print("_")
+        else:
+            print(char)
+        charCount += 1
+
+############
+# (4) Datensätze testen
+
+# Jetzt ist es flexibel genug, dass es auch für kurze und sehr lange Wörter funktioniert
+# Wir ersetzen das Array oben durch "so" und "pressure" => IT WORKS!
+
+############
+# (5) Chars zu einem Wort zusammenbauen
+
+# Nun müssen wir die einzelnen chars wieder zu einem Wort zusammensetzen
+# 2. Schritt: Auf Effizienz mit += achten
+
+gappedWord = ""
+
+for word in words:
+    print(word)
+    for char in word:
+        if charCount % 2 == 1:
+            gappedWord += "_"
+        else:
+            gappedWord += char
+        charCount += 1
+    print(gappedWord)
+
+############
+# (6) Wie nun auf mehr Wörter erweitern?
+
+# Funktioniert, solange nur EIN Wort erzeugt wird => was, wenn die Liste mehrere Wörter hat?
+# LÖSUNG: Schleifen trennen; zuerst um restliche Logik kümmern
+# ZUERST: encrypted word in neuer Liste speichern
+# DANN: AUS RESTLICHEM CODE EINE FUNKTION BAUEN UND WIEDER TESTEN
+
+encryptedWords = []
+
+
+def encrypt_words():
+    charCount = 0
+    gappedWord = ""
+    for word in words:
+        print(word)
+        for char in word:
+            if charCount % 2 == 1:
+                gappedWord += "_"
+            else:
+                gappedWord += char
+            charCount += 1
+        encryptedWords.append(gappedWord)
+        print(encryptedWords)
+
+############
+# (7) Nun: Funktion, die User-Eingabe gegen das Wort aus der "Datenbank" testet
+# ZUERST STATISCH GEGEN FIXEN INDEX
+
+
+def check_user_input():
+    print("WHICH WORD?")
+    userChoice = input().lower()
+    if userChoice == words[0]:
+        print("Well done, you guessed", words[0].upper(), "correctly!")
+    else:
+        print("Sorry, you got this wrong!")
+
+############
+# (8) MAIN: Nun können wir in einer Hauptfunktion alles wichtige aufrufen (und dort die Schleife über DB nützen):
+
+def encrypt_words(word):
+    charCount = 0
+    gappedWord = ""
+    for char in word:
+        if charCount % 2 == 1:
+            gappedWord += "_"
+        else:
+            gappedWord += char
+        charCount += 1
+    encryptedWords.append(gappedWord)
+    return gappedWord
+
+
+def check_user_input():
+    print("WHICH WORD?")
+    userChoice = input().lower()
+    if userChoice == words[0]:
+        print("Well done, you guessed", words[0].upper(), "correctly!")
+    else:
+        print("Sorry, you got this wrong. It would have been:", words[0].upper())
+
+
+def main():
+    for word in words:
+        gapped = encrypt_words(word)
+        print(gapped)
+        check_user_input()
+
+############
+# (9) main() iteriert brav über die DB, aber der Check ist ja noch statisch; wie lösen?
+# EINFÜHREN DER VAR wordCount (in main) und übergeben an check_user_input Funktion!
+
+def check_user_input(wordCount):
+    print("WHICH WORD?")
+    userChoice = input().lower()
+    if userChoice == words[wordCount]:
+        print("Well done, you guessed", words[wordCount].upper(), "correctly!")
+    else:
+        print("Sorry, you got this wrong. It would have been:", words[0].upper())
+
+
+def main():
+    wordCount = 0 # da, weil list index bei 0 beginnt
+    for word in words:
+        gapped = encrypt_words(word)
+        print(gapped)
+        check_user_input(wordCount)
+        wordCount += 1 # da!
+
+#########################
