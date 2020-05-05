@@ -1,0 +1,38 @@
+words = ["pressure", "time", "chance"]
+encryptedWords = []
+
+
+def encrypt_words(word):
+    charCount = 0
+    gappedWord = ""
+    for char in word:
+        if charCount % 2 == 1:
+            gappedWord += "_"
+        else:
+            gappedWord += char
+        charCount += 1
+    encryptedWords.append(gappedWord)
+    return gappedWord
+
+
+def check_user_input(wordCount):
+    print("WHICH WORD?")
+    userChoice = input().lower()
+    if userChoice == words[wordCount]:
+        print("Well done, you guessed", words[wordCount].upper(), "correctly!")
+    else:
+        print("Sorry, you got this wrong. It would have been:", words[0].upper())
+
+
+def main():
+    wordCount = 0
+    for word in words:
+        gapped = encrypt_words(word)
+        print(gapped)
+        check_user_input(wordCount)
+        wordCount += 1
+
+
+# MAIN
+
+main()
